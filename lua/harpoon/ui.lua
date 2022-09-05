@@ -36,7 +36,7 @@ local function create_window()
 
     local Harpoon_win_id, win = popup.create(bufnr, {
         title = "Harpoon",
-        highlight = "HarpoonWindow",
+        highlight = "TelescopeNormal",
         line = math.floor(((vim.o.lines - height) / 2) - 1),
         col = math.floor((vim.o.columns - width) / 2),
         minwidth = width,
@@ -47,7 +47,7 @@ local function create_window()
     vim.api.nvim_win_set_option(
         win.border.win_id,
         "winhl",
-        "Normal:HarpoonBorder"
+        "Normal:TelescopeBorder"
     )
 
     return {
