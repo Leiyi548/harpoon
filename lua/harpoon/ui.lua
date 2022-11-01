@@ -132,6 +132,27 @@ function M.toggle_quick_menu()
         "<Cmd>lua require('harpoon.ui').select_menu_item()<CR>",
         {}
     )
+    vim.api.nvim_buf_set_keymap(
+        Harpoon_bufh,
+        "n",
+        "<C-V>",
+        "<Cmd>lua require('harpoon.ui').select_menu_item_vsplit()<CR>",
+        {}
+    )
+    vim.api.nvim_buf_set_keymap(
+        Harpoon_bufh,
+        "n",
+        "<C-S>",
+        "<Cmd>lua require('harpoon.ui').select_menu_item_split()<CR>",
+        {}
+    )
+    vim.api.nvim_buf_set_keymap(
+        Harpoon_bufh,
+        "n",
+        "<C-T>",
+        "<Cmd>lua require('harpoon.ui').select_menu_item_tab()<CR>",
+        {}
+    )
     vim.cmd(
         string.format(
             "autocmd BufWriteCmd <buffer=%s> lua require('harpoon.ui').on_menu_save()",
@@ -160,6 +181,27 @@ end
 function M.select_menu_item()
     local idx = vim.fn.line(".")
     close_menu(true)
+    M.nav_file(idx)
+end
+
+function M.select_menu_item_vsplit()
+    local idx = vim.fn.line(".")
+    close_menu(true)
+    vim.cmd("vnew")
+    M.nav_file(idx)
+end
+
+function M.select_menu_item_split()
+    local idx = vim.fn.line(".")
+    close_menu(true)
+    vim.cmd("new")
+    M.nav_file(idx)
+end
+
+function M.select_menu_item_tab()
+    local idx = vim.fn.line(".")
+    close_menu(true)
+    vim.cmd("tabnew")
     M.nav_file(idx)
 end
 
