@@ -54,6 +54,12 @@ you mark files you want to revisit later on
 :lua require("harpoon.mark").add_file()
 ```
 
+clever all current marks
+
+```lua
+:lua require("harpoon.mark").get_mark_config().marks = {}
+```
+
 ### File Navigation
 
 view all project marks with:
