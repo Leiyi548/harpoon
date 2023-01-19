@@ -163,7 +163,7 @@ function M.toggle_quick_menu()
     vim.api.nvim_buf_set_keymap(
         Harpoon_bufh,
         "n",
-        "T",
+        "O",
         "<Cmd>lua require('harpoon.ui').select_menu_item_tab()<CR>",
         {}
     )
@@ -199,24 +199,23 @@ function M.select_menu_item()
 end
 
 function M.select_menu_item_vsplit()
-    local idx = vim.fn.line(".")
-    close_menu(true)
-    vim.cmd("vnew")
-    M.nav_file(idx)
+    local curline = vim.api.nvim_get_current_line()
+    local working_directory = vim.fn.getcwd() .. "/"
+    vim.cmd("vs")
+    vim.cmd("e " .. working_directory .. curline)
 end
 
 function M.select_menu_item_split()
-    local idx = vim.fn.line(".")
-    close_menu(true)
-    vim.cmd("new")
-    M.nav_file(idx)
+    local curline = vim.api.nvim_get_current_line()
+    local working_directory = vim.fn.getcwd() .. "/"
+    vim.cmd("sp")
+    vim.cmd("e " .. working_directory .. curline)
 end
 
 function M.select_menu_item_tab()
-    local idx = vim.fn.line(".")
-    close_menu(true)
-    vim.cmd("tabnew")
-    M.nav_file(idx)
+    local curline = vim.api.nvim_get_current_line()
+    local working_directory = vim.fn.getcwd() .. "/"
+    vim.cmd("tabedit " .. working_directory .. curline)
 end
 
 function M.on_menu_save()
