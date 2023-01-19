@@ -81,11 +81,11 @@ function M.toggle_quick_menu()
     vim.cmd(
         string.format(
             "autocmd Filetype harpoon "
-            .. "let path = '%s' | call clearmatches() | "
-            -- move the cursor to the line containing the current filename
-            .. "call search('\\V'.path.'\\$') | "
-            -- add a hl group to that line
-            .. "call matchadd('TelescopeSelection', '\\V'.path.'\\$')",
+                .. "let path = '%s' | call clearmatches() | "
+                -- move the cursor to the line containing the current filename
+                .. "call search('\\V'.path.'\\$') | "
+                -- add a hl group to that line
+                .. "call matchadd('TelescopeSelection', '\\V'.path.'\\$')",
             curr_file:gsub("\\", "\\\\")
         )
     )
@@ -142,6 +142,13 @@ function M.toggle_quick_menu()
     vim.api.nvim_buf_set_keymap(
         Harpoon_bufh,
         "n",
+        "o",
+        "<Cmd>lua require('harpoon.ui').select_menu_item()<CR>",
+        {}
+    )
+    vim.api.nvim_buf_set_keymap(
+        Harpoon_bufh,
+        "n",
         "<C-V>",
         "<Cmd>lua require('harpoon.ui').select_menu_item_vsplit()<CR>",
         {}
@@ -156,7 +163,7 @@ function M.toggle_quick_menu()
     vim.api.nvim_buf_set_keymap(
         Harpoon_bufh,
         "n",
-        "<C-T>",
+        "T",
         "<Cmd>lua require('harpoon.ui').select_menu_item_tab()<CR>",
         {}
     )
