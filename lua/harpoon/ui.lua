@@ -273,21 +273,22 @@ function M.nav_file(id)
     if filename:sub(1, 1) ~= "/" then
         filename = vim.loop.cwd() .. "/" .. mark.filename
     end
-    local buf_id = get_or_create_buffer(filename)
-    local set_row = not vim.api.nvim_buf_is_loaded(buf_id)
-
-    vim.api.nvim_set_current_buf(buf_id)
-    vim.api.nvim_buf_set_option(buf_id, "buflisted", true)
-    if set_row and mark.row and mark.col then
-        vim.cmd(string.format(":call cursor(%d, %d)", mark.row, mark.col))
-        log.debug(
-            string.format(
-                "nav_file(): Setting cursor to row: %d, col: %d",
-                mark.row,
-                mark.col
-            )
-        )
-    end
+    vim.cmd("e " .. filename)
+    -- local buf_id = get_or_create_buffer(filename)
+    -- local set_row = not vim.api.nvim_buf_is_loaded(buf_id)
+    --
+    -- vim.api.nvim_set_current_buf(buf_id)
+    -- vim.api.nvim_buf_set_option(buf_id, "buflisted", true)
+    -- if set_row and mark.row and mark.col then
+    --     vim.cmd(string.format(":call cursor(%d, %d)", mark.row, mark.col))
+    --     log.debug(
+    --         string.format(
+    --             "nav_file(): Setting cursor to row: %d, col: %d",
+    --             mark.row,
+    --             mark.col
+    --         )
+    --     )
+    -- end
 end
 
 function M.location_window(options)
