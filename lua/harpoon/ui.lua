@@ -171,28 +171,28 @@ function M.toggle_quick_menu()
         Harpoon_bufh,
         "n",
         "1",
-        "<Cmd>lua require('harpoon.ui').nav_file(1)<Cr>",
+        "<Cmd>lua require('harpoon.ui').edit_file(1)<Cr>",
         {}
     )
     vim.api.nvim_buf_set_keymap(
         Harpoon_bufh,
         "n",
         "2",
-        "<Cmd>lua require('harpoon.ui').nav_file(2)<Cr>",
+        "<Cmd>lua require('harpoon.ui').edit_file(2)<Cr>",
         {}
     )
     vim.api.nvim_buf_set_keymap(
         Harpoon_bufh,
         "n",
         "3",
-        "<Cmd>lua require('harpoon.ui').nav_file(3)<Cr>",
+        "<Cmd>lua require('harpoon.ui').edit_file(3)<Cr>",
         {}
     )
     vim.api.nvim_buf_set_keymap(
         Harpoon_bufh,
         "n",
         "4",
-        "<Cmd>lua require('harpoon.ui').nav_file(4)<Cr>",
+        "<Cmd>lua require('harpoon.ui').edit_file(4)<Cr>",
         {}
     )
     vim.cmd(
@@ -260,7 +260,7 @@ local function get_or_create_buffer(filename)
     return vim.fn.bufadd(filename)
 end
 
-function M.nav_file(id)
+function M.edit_file(id)
     log.trace("nav_file(): Navigating to", id)
     local idx = Marked.get_index_of(id)
     if not Marked.valid_index(idx) then
@@ -274,21 +274,33 @@ function M.nav_file(id)
         filename = vim.loop.cwd() .. "/" .. mark.filename
     end
     vim.cmd("e " .. filename)
-    -- local buf_id = get_or_create_buffer(filename)
-    -- local set_row = not vim.api.nvim_buf_is_loaded(buf_id)
-    --
-    -- vim.api.nvim_set_current_buf(buf_id)
-    -- vim.api.nvim_buf_set_option(buf_id, "buflisted", true)
-    -- if set_row and mark.row and mark.col then
-    --     vim.cmd(string.format(":call cursor(%d, %d)", mark.row, mark.col))
-    --     log.debug(
-    --         string.format(
-    --             "nav_file(): Setting cursor to row: %d, col: %d",
-    --             mark.row,
-    --             mark.col
-    --         )
-    --     )
-    -- end
+end
+
+function M.nav_file(id)
+    log.trace("nav_file(): Navigating to", id)
+    local idx = Marked.get_index_of(id)
+    if not Marked.valid_index(idx) then
+        log.debug("nav_file(): No mark exists for id", id)
+        return
+    end
+
+    local mark = Marked.get_marked_file(idx)
+    local filename = vim.fs.normalize(mark.filename)
+    local buf_id = get_or_create_buffer(filename)
+    local set_row = not vim.api.nvim_buf_is_loaded(buf_id)
+
+    vim.api.nvim_set_current_buf(buf_id)
+    vim.api.nvim_buf_set_option(buf_id, "buflisted", true)
+    if set_row and mark.row and mark.col then
+        vim.cmd(string.format(":call cursor(%d, %d)", mark.row, mark.col))
+        log.debug(
+            string.format(
+                "nav_file(): Setting cursor to row: %d, col: %d",
+                mark.row,
+                mark.col
+            )
+        )
+    end
 end
 
 function M.location_window(options)
